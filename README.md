@@ -14,8 +14,10 @@ source: [Wikipedia](https://en.wikipedia.org/wiki/Warehouse_management_system)
 -   Log actions from users.
 -   Reporting.
 
-  [Author](https://github.com/Parisamazinanian)
-
+ 
 #License
 
 [GNU Affero General Public License v3.0](https://github.com/Parisamazinanian/Warehouse/blob/main/LICENSE.txt)
+
+
+ [Author](https://github.com/Parisamazinanian)
