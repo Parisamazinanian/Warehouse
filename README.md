@@ -11,3 +11,7 @@ source: [Wikipedia](https://en.wikipedia.org/wiki/Warehouse_management_system)
 -   Reporting.
 
   [Author](https://github.com/Parisamazinanian)
+
+#License
+
+[GNU Affero General Public License v3.0](https://github.com/Parisamazinanian/Warehouse/blob/main/LICENSE.txt)
