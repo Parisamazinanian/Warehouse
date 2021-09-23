@@ -1,9 +1,12 @@
 # Steps of creating a src file in Intellij IDE
 1- Installing intelligence IDE
-`..`
+`brew install --cask intellij-idea-ce`
+
 2- Open intelliJ IDE
+
 3- Openning a new project from
 `Projects >> New Project >> Java`
+
 4- wtite the following commands in the terminal of the new project which we open:
 
 - `git init`
