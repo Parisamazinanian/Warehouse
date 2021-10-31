@@ -10,239 +10,247 @@ import java.util.Scanner;
  * @author riteshp
  */
 class TheWarehouseManager implements Repository {
-    // =====================================================================================
-    // Member Variables
-    // =====================================================================================
+// =====================================================================================
+// Member Variables
+// =====================================================================================
 
-    // To read inputs from the console/CLI
-    private final Scanner reader = new Scanner(System.in);
+// To read inputs from the console/CLI
+private final Scanner reader = new Scanner(System.in);
+private final String[] userOptions = {
+        "1. List items by warehouse", "2. Search an item and place an order", "3. Quit"
+        };
+// To refer the user provided name.
+private String userName;
 
-    private final String[] userOptions = {
-            "1. List items by warehouse", "2. Search an item and place an order", "3. Quit"
-    };
-    // To refer the user provided name.
-    private String userName;
+// =====================================================================================
+// Public Member Methods
+// =====================================================================================
 
-    // =====================================================================================
-    // Public Member Methods
-    // =====================================================================================
-
-    /**
-     * Welcome User
-     */
-    public void welcomeUser() {
+/** Welcome User */
+public void welcomeUser() {
         this.seekUserName();
         this.greetUser();
-    }
+        }
 
-    /**
-     * Ask for user's choice of action
-     */
-    public int getUsersChoice() {
+/** Ask for user's choice of action */
+//3- showing the user choice of action
+public int getUsersChoice() {
         // TODO
+        //Ask the user to insert a number to show choose a performance
         int userChoice;
-        System.out.println("Please select one option, by typing 1,2 or 3: ");
-        System.out.println(Arrays.toString(userOptions));
         while (true) {
-            userChoice = reader.nextInt();
-            if (userChoice > 3 || userChoice < 1) {
-                System.out.println("Please enter a valid number. ");
-            } else {
-                break;//if the user types the correct option 1, 2 or 3, then it will break and show the result. Otherwise the while loop ask the user to give the correct option
-            }
+        System.out.println("Please choose 1, 2 or 3 for: \n"+Arrays.toString(userOptions));
+        userChoice = reader.nextInt();
+        if (userChoice > 3 || userChoice < 1) {
+        System.out.println("Please enter a valid number. ");
+        } else {
+        break;//if the user types the correct option 1, 2 or 3, then it will break and show the result. Otherwise the while loop ask the user to give the correct option
+        }
         }
         return userChoice;
-
-    }
-
-    /**
-     * Initiate an action based on given option
-     */
-    public void performAction(int option) {
-        // TODO
-
-        if (option == 1) {
-            listItemsByWarehouse();
-        } else if (option == 2) {
-            System.out.println(" Please write the name of item you are looking for: ");
-            String userItem = reader.next();
-            userItem += reader.nextLine();
-            getAvailableAmount(userItem);
-        }else if (option == 3) {
-            quit();
         }
 
-    }
-
-    /**
-     * Confirm an action
-     *
-     * @return action
-     */
-    /*public boolean confirm(String message) {
+/** Initiate an action based on given option */
+//user choice will return following options
+public void performAction(int option) {
         // TODO
-    }*/
+        if(option==1){
+        listItemsByWarehouse();
+        }else if(option==2){
+        askItemToOrder();
+        }else {
+        quit();
+        }
+        }
 
-    /**
-     * End the application
-     */
-    public void quit() {
+/**
+ * Confirm an action
+ *
+ * @return action
+ */
+public boolean confirm(String message) {
+        // TODO
+        boolean check;
+        System.out.println(message);
+        String userAnswer= reader.next();
+        userAnswer+= reader.nextLine();
+        if(userAnswer.equals("yes".toLowerCase())){
+        check=true;
+        }else {
+        check=false;
+        }
+        return check;
+        }
+
+/** End the application */
+public void quit() {
         System.out.printf("\nThank you for your visit, %s!\n", this.userName);
         System.exit(0);
-    }
-
-    // =====================================================================================
-    // Private Methods
-    // =====================================================================================
-
-    /**
-     * Get user's name via CLI
-     */
-    private void seekUserName() {
-        // TODO
-
-        System.out.println("Could you please enter your name: ");
-        this.userName = reader.nextLine();
-
-    }
-
-    /**
-     * Print a welcome message with the given user's name
-     */
-    private void greetUser() {
-        // TODO
-        System.out.println("Hello dear " + this.userName + " Welcome to our Warehouse! ");
-    }
-
-    private void listItemsByWarehouse() {
-        // TODO
-        System.out.println("Items in our Warehouse1 are: ");
-        for (String item : WAREHOUSE1) {
-            System.out.println(item);
         }
-        System.out.println("Items in our Warehouse2 are: ");
-        for (String item : WAREHOUSE2) {
-            System.out.println(item);
-        }
-    }
 
-    private void listItems(String[] warehouse) {
+// =====================================================================================
+// Private Methods
+// =====================================================================================
+
+/** Get user's name via CLI */
+//1- asking user to provide his/her name:
+private void seekUserName() {
         // TODO
-        System.out.println("Items in this Warehouse are: ");
-        for (String item : warehouse) {
-            System.out.println(item);
+        System.out.println("Please enter your name: ");
+        userName=reader.nextLine();
         }
-    }
 
-    /*private void searchItemAndPlaceOrder() {
+/** Print a welcome message with the given user's name */
+//2- Greet the user
+private void greetUser() {
         // TODO
-    }*/
-
-    /**
-     * Ask the user to specify an Item to Order
-     *
-     * @return String itemName
-     */
-    /*private String askItemToOrder() {
-        // TODO
-    }*/
-
-
-    /**
-     * Calculate total availability of the given item
-     *
-     * @param itemName itemName
-     * @return integer availableCount
-     */
-    private int getAvailableAmount(String itemName) {
-        // TODO
-
-        int count1 = 0;
-        int count2 = 0;
-        for (String item : WAREHOUSE1) {
-            if (itemName.equals(item)) {
-                count1++;
-            }
+        System.out.println("Hello "+userName+" ! Welcome to our Warehouse.");
         }
-        for (String item : WAREHOUSE2) {
-            if (itemName.equals(item)) {
-                count2++;
-            }
+//4.i in the ListItems I wrote a loop to get every element of a warehouse. now is time to call the listItems method to
+//get the elements of each warehouse
+private void listItemsByWarehouse() {
+        // TODO
+        System.out.println("Items in Warehouse1 are ");
+        listItems(WAREHOUSE1);
+        System.out.println("Items in Warehouse2 are ");
+        listItems(WAREHOUSE2);
+
         }
-        int totalCount = count1 + count2;
+//4.i>> this part is for getting the items of a warehouse
+private void listItems(String[] warehouse) {
+        // TODO
+        //For each element in the warehouse array print the element. Please consider the element type is important
+        for (String element:warehouse) {
+        System.out.println(element);
+        }
+        }
+//4.ii.c.a&b ask the user if he/she wants to place an order
+private void searchItemAndPlaceOrder() {
+        // TODO
+        System.out.println("Do you want to order the searched item?\n"+" Please type yes or no!");
+        /*String UserOrderchoice= reader.next();
+        UserOrderchoice+= reader.nextLine();
+
+        if (UserOrderchoice.equals("yes")){
+            askAmountAndConfirmOrder(getAvailableAmount(askItemToOrder()), askItemToOrder());
+        }else if(UserOrderchoice.equals("no")){
+            quit();
+        }*/
+        }
+
+/**
+ * Ask the user to specify an Item to Order
+ *
+ * @return String itemName
+ */
+//4.ii.a ask the user to search for an item
+private String askItemToOrder() {
+        // TODO
+        System.out.println("Please type the name of an item you are looking for: ");
+        String searchedItem=reader.next();
+        searchedItem+= reader.nextLine();
+        getAvailableAmount(searchedItem);
+        return searchedItem;
+        }
+
+/**
+ * Calculate total availability of the given item
+ *
+ * @param itemName itemName
+ * @return integer availableCount
+ */
+//4.ii.b.b&c the total amount of searched item and the amount of the item in each warehouse
+private int getAvailableAmount(String itemName) {
+        // TODO
+        int count1 = find(itemName, WAREHOUSE1);
+        int count2 = find(itemName,WAREHOUSE2);
+        int totalCount = count1+count2;
         System.out.println("The total number of " + itemName + " in our warehouses: " + totalCount);
         if(totalCount==0){
-            System.out.println(itemName+ " is not in stock");
-        }else if (count1>0 && count2>0){
-            System.out.println("Both Warehouses");
-            if(count1>count2){
-                System.out.println("Warehouse 1 has the highest amount of "+ itemName+" equal to: "+count1);
-            }else if(count1<count2){
-                System.out.println("Warehouse2 has the highest amount of "+ itemName+" equal to: "+count2);
-            }
+        System.out.println(itemName+ " is not in stock");
+        }else {
+        if (count1>0 && count2>0){
+        System.out.println("We have the good in Both Warehouses");
+        if(count1>count2){
+        System.out.println("Warehouse 1 has the highest amount of "+ itemName+" equal to: "+count1);
+        }else if(count1<count2){
+        System.out.println("Warehouse 2 has the highest amount of "+ itemName+" equal to: "+count2);
+        }else {
+        System.out.println("There are the same amounts of the item in both Warehouses: " + count1 + " in each");
+        }
         }else{
-            System.out.println("There are the same amounts in both Warehouses: "+count1);
+        if(count1>0){
+        System.out.println("Warehouse 1 has the highest amount of "+ itemName+" equal to: "+count1);
+        } else{
+        System.out.println("Warehouse 2 has the highest amount of "+ itemName+" equal to: "+count2);
         }
-        if(count1+count2>0){
-            System.out.println("Do you want to order the item? please type yes or No");
-            String answer=reader.nextLine();
-            if(answer.toLowerCase().equals("yes")){
-                askAmountAndConfirmOrder(totalCount, itemName);
-            }else {
-                System.out.println(" Thank you for your visit");
-            }
+        }
+        searchItemAndPlaceOrder();
+        String UserOrderchoice= reader.next();
+        UserOrderchoice+= reader.nextLine();
+
+        if (UserOrderchoice.equals("yes")){
+        askAmountAndConfirmOrder(totalCount, itemName);
+        }else if(UserOrderchoice.equals("no")){
+        quit();
+        }
+
 
         }
-        return count1 + count2;
-    }
+        return totalCount;
+        }
 
 
-
-
-    /**
-     * Find the count of an item in a given warehouse
-     *
-     * @param item the item
-     * @param warehouse the warehouse
-     * @return count
-     */
-    private int find(String item, String[] warehouse) {
+/**
+ * Find the count of an item in a given warehouse
+ *
+ * @param item the item
+ * @param warehouse the warehouse
+ * @return count
+ */
+//4.ii.b.a the amount of searched item in each warehouse
+private int find(String item, String[] warehouse) {
         // TODO
-        int count = 0;
-        for (String eachitem : warehouse) {
-            if (item.equals(eachitem)) {
-                count++;
-            }
+        int count=0;
+        for(String element:warehouse){
+        if(item.equals(element)) {
+        count++;
+        }
         }
         return count;
-    }
-
-    /** Ask order amount and confirm order */
-    private void askAmountAndConfirmOrder(int availableAmount, String item) {
-        // TODO
-        System.out.println("How many of "+ item+ " do you want to order?");
-        int numberByUser= reader.nextInt();
-        if(numberByUser<= availableAmount){
-            System.out.println("the order has been placed: "+numberByUser+" x "+item);
-        }else {
-            System.out.println("The total available amount is: "+availableAmount+ " \n " +
-                    "Would you like to order the highest amount avalable in stock?");
-            String answer=reader.next();
-            if(answer.toLowerCase().equals("yes")){
-                System.out.println("the order has been placed: "+availableAmount+" x "+item);
-            }else {
-                System.out.println(" Thank you for your visit");
-            }
         }
-    }
 
-    /**
-     * Get amount of order
-     *
-     * @param availableAmount
-     * @return
-     */
-    /*private int getOrderAmount(int availableAmount) {
+/** Ask order amount and confirm order */
+private void askAmountAndConfirmOrder(int availableAmount, String item) {
         // TODO
-    }*/
+        int amoutForOrder = getOrderAmount(availableAmount);
+        if (amoutForOrder<= availableAmount){
+        System.out.println("the order has been placed: "+amoutForOrder+" x "+item);
+        }else {
+        System.out.println("The total available amount is: "+availableAmount+ " \n " +
+        "Would you like to order the highest amount avalable in stock?");
+        String answer=reader.next();
+        answer += reader.nextLine();
+        if(answer.equals("yes")){
+        System.out.println("the order has been placed: "+availableAmount+" x "+item);
+        }else {
+        System.out.println(" Thank you for your visit");
+        }
+        }
+
+        }
+
+/**
+ * Get amount of order
+ *
+ * @param availableAmount
+ * @return
+ */
+//4.ii.c.b
+private int getOrderAmount(int availableAmount) {
+        // TODO
+        System.out.println("How many do you want to order?");
+        int userAmount=reader.nextInt();
+        return userAmount;
+        }
 }
