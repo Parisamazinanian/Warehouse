@@ -1,7 +1,11 @@
 package intro;
-import java.util.Arrays;
-import java.util.Scanner;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -9,7 +13,7 @@ import java.util.Scanner;
  *
  * @author riteshp
  */
-class TheWarehouseManager implements Repository {
+class TheWarehouseManager implements RepositoryOld {
 // =====================================================================================
 // Member Variables
 // =====================================================================================
@@ -110,10 +114,17 @@ private void greetUser() {
 //get the elements of each warehouse
 private void listItemsByWarehouse() {
         // TODO
-        System.out.println("Items in Warehouse1 are ");
+        Set<Integer> warehouseIDs = Repository.getWarehouses();
+        for (int id:warehouseIDs) {
+                System.out.println("List of items in warehouse "+id+" :");
+                System.out.println(Repository.getItemsByWarehouse(id));
+                System.out.println("Total items in warehouse "+id+" : "+Repository.getItemsByWarehouse(id).size());
+        }
+
+        /*System.out.println("Items in Warehouse1: ");
         listItems(WAREHOUSE1);
-        System.out.println("Items in Warehouse2 are ");
-        listItems(WAREHOUSE2);
+        System.out.println("Items in Warehouse2: ");
+        listItems(WAREHOUSE2);*/
 
         }
 //4.i>> this part is for getting the items of a warehouse
@@ -147,8 +158,8 @@ private void searchItemAndPlaceOrder() {
 private String askItemToOrder() {
         // TODO
         System.out.println("Please type the name of an item you are looking for: ");
-        String searchedItem=reader.next();
-        searchedItem+= reader.nextLine();
+        String searchedItem=reader.next().toLowerCase();
+        searchedItem+= reader.nextLine().toLowerCase();
         getAvailableAmount(searchedItem);
         return searchedItem;
         }
@@ -162,8 +173,8 @@ private String askItemToOrder() {
 //4.ii.b.b&c the total amount of searched item and the amount of the item in each warehouse
 private int getAvailableAmount(String itemName) {
         // TODO
-        int count1 = find(itemName, WAREHOUSE1);
-        int count2 = find(itemName,WAREHOUSE2);
+        int count1 = find(itemName, Repository.getItemsByWarehouse(1));
+        int count2 = find(itemName,Repository.getItemsByWarehouse(2));
         int totalCount = count1+count2;
         System.out.println("The total number of " + itemName + " in our warehouses: " + totalCount);
         if(totalCount==0){
@@ -208,14 +219,19 @@ private int getAvailableAmount(String itemName) {
  * @param warehouse the warehouse
  * @return count
  */
+
 //4.ii.b.a the amount of searched item in each warehouse
-private int find(String item, String[] warehouse) {
+private int find(String item, List<Item> warehouse) {
         // TODO
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
         int count=0;
-        for(String element:warehouse){
-        if(item.equals(element)) {
-        count++;
-        }
+        for(Item element:warehouse){
+                if(item.equals(String.format("%s %s", element.getState().toLowerCase(), element.getCategory().toLowerCase()))) {
+                        LocalDate itemStockDate = element.getDateOfStock().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        System.out.println("- Warehouse "+element.getWarehouse()+ " (in stock for "+ChronoUnit.DAYS.between(itemStockDate, now)+" days)");
+                        count++;
+                }
         }
         return count;
         }
